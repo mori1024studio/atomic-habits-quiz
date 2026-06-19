@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>習慣斷點測驗｜你的習慣為什麼一直斷掉？</title>
+<meta name="description" content="10題情境測驗，找出你習慣斷裂的根本位置。不是意志力不夠，是哪個環節的系統出了問題。"/>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔗</text></svg>"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet"/>
+<style>
+/* ── CSS：重置與全域變數 ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0A0A0F;--s1:#14141F;--s2:#1C1C2A;--s3:#242435;
+  --border:rgba(255,255,255,0.07);--text:#EDEFF5;--muted:#9090A8;
+  --gold:#C4A96A;--gold-l:#E8C86A;
+  --r:18px;--ease:.26s cubic-bezier(.4,0,.2,1);
+  --cS:#C47058;--cI:#8A5EC4;--cT:#58A898;
+  --cR:#C4A040;--cE:#5888C4;--cO:#7890B0;
+}
+html{background:var(--bg);color:var(--text);font-family:'Noto Sans TC',sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px 16px 60px;position:relative;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:
+  radial-gradient(ellipse 80% 50% at 50% -5%,rgba(88,168,152,.12) 0%,transparent 65%),
+  radial-gradient(ellipse 45% 30% at 95% 85%,rgba(196,169,106,.07) 0%,transparent 55%);
+  pointer-events:none;z-index:0}
+
+/* ── Particles / Orbs / Cursor ── */
+#particles-js{position:fixed;inset:0;z-index:0;pointer-events:none}
+#mori-blobs{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0;filter:blur(72px)}
+.mblob{position:absolute;border-radius:50%;mix-blend-mode:screen;will-change:transform}
+.mblob--a{width:70vw;height:70vw;top:-18%;left:-15%;background:radial-gradient(circle,rgba(88,168,152,.22) 0%,transparent 65%);animation:moriDrift 26s ease-in-out infinite}
+.mblob--b{width:58vw;height:58vw;top:8%;right:-18%;background:radial-gradient(circle,rgba(88,168,152,.14) 0%,transparent 65%);animation:moriDrift 26s ease-in-out -9s infinite}
+.mblob--c{width:52vw;height:52vw;bottom:-22%;left:18%;background:radial-gradient(circle,rgba(196,169,106,.12) 0%,transparent 65%);animation:moriDrift 26s ease-in-out -18s infinite}
+@keyframes moriDrift{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(7%,-5%) scale(1.1)}66%{transform:translate(-5%,7%) scale(.92)}}
+*{cursor:none}
+#cursor-fx{position:fixed;inset:0;pointer-events:none;z-index:9999}
+.cur-dot,.cur-ring{position:fixed;top:0;left:0;pointer-events:none;border-radius:50%;will-change:transform}
+.cur-dot{width:6px;height:6px;background:var(--gold);transform:translate3d(-200px,-200px,0) translate(-50%,-50%);transition:width .12s,height .12s}
+.cur-ring{width:28px;height:28px;border:1.5px solid rgba(196,169,106,.45);background:transparent;transform:translate3d(-200px,-200px,0) translate(-50%,-50%);transition:width .18s,height .18s,border-color .18s,background .18s}
+.cur-ring.is-locked{width:42px;height:42px;border-color:rgba(196,169,106,.75);background:rgba(196,169,106,.06)}
+.cur-ring.is-down{width:18px;height:18px;background:rgba(196,169,106,.1)}
+#cursor-spotlight{position:fixed;inset:0;pointer-events:none;z-index:1;background:radial-gradient(220px at -999px -999px,rgba(91,141,184,.18),transparent 70%)}
+
+/* ── 畫面切換 ── */
+.screen{display:none;width:100%;max-width:680px;position:relative;z-index:1;animation:fadeUp .36s ease both}
+.screen.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r)}
+.gap{height:8px}
+
+/* ── 歡迎頁 ── */
+#screen-welcome .card{padding:52px 44px;text-align:center}
+.badge-pill{display:inline-block;background:rgba(88,168,152,.1);border:1px solid rgba(88,168,152,.25);color:var(--cT);padding:5px 18px;border-radius:100px;font-size:12px;font-weight:700;letter-spacing:.06em;margin-bottom:28px}
+.hero-h1{font-size:clamp(28px,5vw,44px);font-weight:900;line-height:1.18;margin-bottom:16px;background:linear-gradient(140deg,#fff 20%,var(--gold-l) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:15px;line-height:1.9;margin-bottom:32px;max-width:440px;margin-left:auto;margin-right:auto;color:var(--muted)}
+.stats-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:36px}
+.stat-chip{background:var(--s2);border:1px solid var(--border);border-radius:100px;padding:7px 16px;font-size:13px;color:var(--muted)}
+.stat-chip strong{color:var(--text)}
+.sym-head{margin-bottom:20px}
+.sym-lbl{font-size:clamp(18px,3.5vw,22px);font-weight:900;color:var(--text);margin-bottom:8px}
+.sym-hint{font-size:13px;color:var(--muted)}
+.sym-grid{display:flex;flex-direction:column;gap:7px;margin-bottom:10px}
+.sym-item{background:var(--s2);border:1.5px solid var(--border);border-radius:12px;padding:12px 15px;font-size:13.5px;line-height:1.55;cursor:pointer;transition:var(--ease);display:flex;gap:11px;align-items:flex-start;text-align:left}
+.sym-item:hover{border-color:rgba(88,168,152,.3)}
+.sym-item.picked{border-color:var(--cT);background:rgba(88,168,152,.07)}
+.sym-ltr{width:24px;min-width:24px;height:24px;border-radius:6px;background:var(--s1);border:1.5px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:var(--muted);flex-shrink:0;margin-top:1px;transition:var(--ease)}
+.sym-item.picked .sym-ltr{background:var(--cT);border-color:var(--cT);color:#0A0A0F}
+.sym-txt{color:var(--muted);transition:var(--ease)}
+.sym-item.picked .sym-txt{color:var(--text)}
+.sym-count{font-size:12px;color:var(--muted);margin-bottom:28px;min-height:20px}
+.btn-gold{display:flex;align-items:center;justify-content:center;gap:9px;background:linear-gradient(135deg,var(--gold) 0%,var(--gold-l) 100%);color:#0A0A0F;border:none;border-radius:100px;padding:17px 48px;font-size:17px;font-weight:900;cursor:pointer;font-family:inherit;letter-spacing:.02em;width:100%;transition:var(--ease)}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(196,169,106,.3)}
+.btn-gold:disabled{opacity:.38;cursor:not-allowed;transform:none;box-shadow:none}
+
+/* ── 測驗頁 ── */
+#screen-quiz{padding-top:0}
+.quiz-prog-wrap{margin-bottom:16px}
+.quiz-prog-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.prog-dim{font-size:12px;font-weight:700;letter-spacing:.05em;color:var(--cT);text-transform:uppercase}
+.prog-num{font-size:12px;color:var(--muted)}
+.prog-track{height:3px;background:var(--s2);border-radius:100px;overflow:hidden}
+.prog-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--cT),var(--gold));transition:width .5s ease}
+#screen-quiz .card{padding:32px 32px 24px}
+.q-num{font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--muted);text-transform:uppercase;margin-bottom:14px}
+.q-text{font-size:clamp(16px,2.8vw,20px);font-weight:700;line-height:1.5;margin-bottom:24px}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{background:var(--s2);border:1.5px solid var(--border);border-radius:12px;padding:13px 16px;cursor:pointer;transition:var(--ease);display:flex;gap:12px;align-items:flex-start;text-align:left}
+.opt:hover{border-color:rgba(88,168,152,.35)}
+.opt.picked{border-color:var(--cT);background:rgba(88,168,152,.07)}
+.opt-ltr{width:26px;min-width:26px;height:26px;border-radius:7px;background:var(--s1);border:1.5px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:var(--muted);flex-shrink:0;margin-top:1px;transition:var(--ease)}
+.opt.picked .opt-ltr{background:var(--cT);border-color:var(--cT);color:#0A0A0F}
+.opt-txt{font-size:14px;line-height:1.6;color:var(--muted);transition:var(--ease)}
+.opt.picked .opt-txt{color:var(--text)}
+.quiz-nav{display:flex;justify-content:flex-end;margin-top:20px}
+.btn-next{background:var(--s2);border:1.5px solid var(--border);border-radius:100px;padding:12px 32px;font-size:15px;font-weight:700;color:var(--muted);cursor:pointer;font-family:inherit;transition:var(--ease)}
+.btn-next:not(:disabled):hover{border-color:var(--gold);color:var(--text)}
+.btn-next:disabled{opacity:.35;cursor:not-allowed}
+.btn-next.ready{border-color:var(--gold);color:var(--gold)}
+
+/* ── 計算頁 ── */
+#screen-calc{text-align:center}
+#screen-calc .card{padding:64px 44px}
+.calc-icon{font-size:48px;margin-bottom:24px;animation:pulse 1.4s ease infinite}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:.8}50%{transform:scale(1.08);opacity:1}}
+.calc-title{font-size:22px;font-weight:900;margin-bottom:12px}
+.calc-sub{font-size:14px;color:var(--muted);min-height:24px;transition:opacity .3s}
+.calc-bar-wrap{margin:32px 0 0;height:3px;background:var(--s2);border-radius:100px;overflow:hidden}
+.calc-bar{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--cT),var(--gold));width:0;transition:width .6s ease}
+
+/* ── 問卷解鎖頁（screen-survey）── */
+.survey-hero{border-radius:var(--r);padding:40px 36px 32px;text-align:center;position:relative;overflow:hidden;background:var(--s1);border:1px solid var(--border)}
+.survey-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% -10%,var(--type-color-a,#58A898) 0%,transparent 70%);opacity:.12;pointer-events:none}
+.survey-hero-badge{display:inline-block;padding:4px 14px;border-radius:100px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:18px;border:1px solid var(--type-color-b,#70C0B0);color:var(--type-color-b,#70C0B0);background:rgba(255,255,255,.04)}
+.survey-hero-emoji{font-size:48px;margin-bottom:10px;display:block}
+.survey-hero-en{font-size:11px;font-weight:700;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;margin-bottom:4px}
+.survey-hero-zh{font-size:clamp(26px,4.5vw,38px);font-weight:900;line-height:1.15;background:linear-gradient(135deg,#fff 0%,var(--type-color-b,#70C0B0) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px}
+.survey-hero-motto{font-size:13.5px;font-style:italic;color:var(--muted);max-width:380px;margin:0 auto}
+.survey-card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r);padding:32px 36px;margin-top:8px}
+.survey-eyebrow{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--cT);margin-bottom:8px}
+.survey-title{font-size:20px;font-weight:900;margin-bottom:8px}
+.survey-sub{font-size:13px;color:var(--muted);line-height:1.75;padding:12px 16px;background:rgba(88,168,152,.06);border:1px solid rgba(88,168,152,.18);border-radius:10px;margin-bottom:24px}
+.survey-q{margin-bottom:20px}
+.survey-q-text{font-size:14px;font-weight:700;margin-bottom:10px}
+.survey-opts{display:flex;flex-direction:column;gap:6px}
+.s-opt{background:var(--s2);border:1.5px solid var(--border);border-radius:10px;padding:10px 14px;cursor:pointer;font-size:13.5px;color:var(--muted);transition:var(--ease);display:flex;gap:10px;align-items:center}
+.s-opt:hover{border-color:rgba(196,169,106,.3)}
+.s-opt.picked{border-color:var(--gold);color:var(--text);background:rgba(196,169,106,.07)}
+.s-dot{width:16px;min-width:16px;height:16px;border-radius:50%;border:1.5px solid rgba(255,255,255,.2);flex-shrink:0;transition:var(--ease)}
+.s-opt.picked .s-dot{background:var(--gold);border-color:var(--gold)}
+.survey-result-box{background:rgba(196,169,106,.07);border:1px solid rgba(196,169,106,.22);border-radius:12px;padding:16px 18px;font-size:14px;line-height:1.75;color:var(--text);margin:0 0 20px;display:none}
+.survey-result-cta{margin-top:8px;font-weight:700;color:var(--gold)}
+.btn-unlock{display:flex;align-items:center;justify-content:center;gap:9px;background:linear-gradient(135deg,var(--gold) 0%,var(--gold-l) 100%);color:#0A0A0F;border:none;border-radius:100px;padding:16px 48px;font-size:16px;font-weight:900;cursor:pointer;font-family:inherit;width:100%;transition:var(--ease)}
+.btn-unlock:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(196,169,106,.28)}
+.btn-unlock:disabled{opacity:.35;cursor:not-allowed;transform:none;box-shadow:none}
+
+/* ── 結果頁 ── */
+#screen-result{padding-bottom:0}
+.result-hero{border-radius:var(--r);padding:44px 36px 36px;text-align:center;position:relative;overflow:hidden;background:var(--s1);border:1px solid var(--border)}
+.result-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% -10%,var(--type-color-a) 0%,transparent 70%);opacity:.14;pointer-events:none}
+.result-badge{display:inline-block;padding:4px 14px;border-radius:100px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:20px;border:1px solid var(--type-color-b);color:var(--type-color-b);background:rgba(255,255,255,.04)}
+.result-emoji{font-size:52px;margin-bottom:12px;display:block}
+.result-type-en{font-size:11px;font-weight:700;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;margin-bottom:6px}
+.result-type-zh{font-size:clamp(28px,5vw,42px);font-weight:900;line-height:1.15;background:linear-gradient(135deg,#fff 0%,var(--type-color-b) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:10px}
+.result-motto{font-size:14px;font-style:italic;color:var(--muted);max-width:380px;margin:0 auto}
+
+/* 法則指示器 */
+.law-card{background:var(--s2);border:1px solid var(--border);border-radius:var(--r);padding:18px 22px;margin-top:8px;display:flex;gap:12px;align-items:flex-start}
+.law-icon-box{width:38px;min-width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;margin-top:2px}
+.law-text{font-size:13.5px;color:var(--muted);line-height:1.6}
+.law-text strong{color:var(--type-color-b)}
+
+/* 分析卡片區 */
+.result-body{background:var(--s1);border:1px solid var(--border);border-radius:var(--r);padding:28px 32px;margin-top:8px}
+.insight-card{background:var(--s2);border:1px solid var(--border);border-radius:14px;padding:22px 24px;margin-bottom:12px}
+.insight-label{font-size:17px;font-weight:900;color:var(--text);letter-spacing:.01em;margin-bottom:12px}
+.insight-text{font-size:15px;line-height:1.85;color:var(--muted)}
+.mori-box{background:rgba(196,169,106,.05);border:1px solid rgba(196,169,106,.18);border-radius:14px;padding:22px 24px;margin-top:0}
+.mori-lbl{font-size:17px;font-weight:900;color:var(--gold);letter-spacing:.01em;margin-bottom:12px}
+.mori-quote{font-size:15px;line-height:1.85;color:var(--muted);font-style:italic}
+
+/* Email 區 */
+.email-wrap{background:var(--s1);border:1px solid var(--border);border-radius:var(--r);padding:28px 32px;margin-top:8px}
+.email-title{font-size:18px;font-weight:900;margin-bottom:6px}
+.email-sub{font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.7}
+.email-row{display:flex;gap:10px;margin-bottom:8px}
+.email-inp{flex:1;background:var(--s2);border:1.5px solid var(--border);border-radius:12px;padding:13px 16px;color:var(--text);font-size:15px;outline:none;font-family:inherit;transition:var(--ease)}
+.email-inp:focus{border-color:rgba(196,169,106,.45)}
+.btn-email{background:linear-gradient(135deg,var(--gold),var(--gold-l));color:#0A0A0F;border:none;border-radius:12px;padding:13px 24px;font-size:15px;font-weight:900;cursor:pointer;font-family:inherit;white-space:nowrap;transition:var(--ease)}
+.btn-email:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(196,169,106,.28)}
+.btn-skip-email{background:none;border:none;color:var(--muted);font-size:13.5px;cursor:pointer;font-family:inherit;text-decoration:underline;padding:4px 0;display:block;text-align:center;width:100%;transition:var(--ease)}
+.btn-skip-email:hover{color:var(--text)}
+.email-note{font-size:12px;color:var(--muted);margin-top:12px;opacity:.65;text-align:center}
+.email-done{font-size:14px;color:var(--cT);font-weight:700;margin-top:12px;display:none;text-align:center}
+
+/* 底部按鈕 */
+.actions-wrap{background:var(--s1);border:1px solid var(--border);border-radius:var(--r);padding:24px 32px;margin-top:8px}
+.btn-row{display:flex;flex-direction:column;gap:10px}
+.btn-line{display:flex;align-items:center;justify-content:center;gap:10px;background:#06C755;color:#fff;border:none;border-radius:100px;padding:17px 38px;font-size:16px;font-weight:900;cursor:pointer;font-family:inherit;transition:var(--ease);width:100%}
+.btn-line:hover{box-shadow:0 8px 26px rgba(6,199,85,.3);transform:translateY(-2px)}
+.btn-sec-row{display:flex;gap:10px}
+.btn-ghost-sec{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;background:transparent;border:1.5px solid var(--border);border-radius:100px;padding:13px 10px;font-size:14px;font-weight:700;color:var(--muted);cursor:pointer;font-family:inherit;transition:var(--ease)}
+.btn-ghost-sec:hover{border-color:rgba(255,255,255,.22);color:var(--text)}
+.btn-retake{display:block;margin:8px auto 0;background:transparent;border:none;color:var(--muted);font-size:13.5px;cursor:pointer;font-family:inherit;text-decoration:underline}
+.btn-retake:hover{color:var(--text)}
+
+@media(max-width:480px){
+  #screen-welcome .card{padding:28px 20px}
+  .survey-hero,.survey-card,.result-hero,.law-card,.result-body,.email-wrap,.actions-wrap{padding-left:20px;padding-right:20px}
+  #screen-quiz .card{padding:24px 20px 20px}
+  .email-row{flex-direction:column}
+  .btn-email{width:100%}
+  .btn-sec-row{flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<div id="cursor-fx" aria-hidden="true">
+  <div class="cur-ring" id="cur-ring"></div>
+  <div class="cur-dot" id="cur-dot"></div>
+</div>
+<div id="cursor-spotlight"></div>
+<div id="mori-blobs" aria-hidden="true">
+  <div class="mblob mblob--a"></div>
+  <div class="mblob mblob--b"></div>
+  <div class="mblob mblob--c"></div>
+</div>
+<div id="particles-js"></div>
+
+<!-- 分享圖卡（隱藏，html2canvas 用） -->
+<div id="share-card-wrap" style="position:fixed;top:-9999px;left:-9999px;pointer-events:none;z-index:-1">
+  <div id="share-card" style="width:600px;height:600px;background:#0A0A0F;font-family:'Noto Sans TC',sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:56px 48px;box-sizing:border-box;position:relative;overflow:hidden">
+    <div id="sc-glow" style="position:absolute;inset:0;pointer-events:none"></div>
+    <div id="sc-accent" style="position:absolute;top:0;left:0;right:0;height:3px"></div>
+    <span id="sc-emoji" style="font-size:80px;display:block;margin-bottom:18px;position:relative"></span>
+    <div id="sc-type-en" style="font-size:13px;font-weight:700;color:#9090A8;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;position:relative"></div>
+    <div id="sc-type-zh" style="font-size:54px;font-weight:900;color:#FFFFFF;margin-bottom:14px;position:relative;line-height:1.2"></div>
+    <div id="sc-motto" style="font-size:18px;color:#9090A8;line-height:1.7;max-width:400px;font-style:italic;margin-bottom:36px;position:relative"></div>
+    <div style="width:60px;height:1px;background:rgba(255,255,255,.15);margin-bottom:24px;position:relative"></div>
+    <div style="font-size:14px;color:#C4A96A;margin-bottom:6px;position:relative">你的習慣斷點是哪一種？</div>
+    <div id="sc-url" style="font-size:13px;color:#9090A8;position:relative">mori1024studio.github.io</div>
+    <div style="position:absolute;bottom:24px;right:28px;font-size:13px;font-weight:700;color:#C4A96A;opacity:.7">by Mori</div>
+  </div>
+</div>
+
+<!-- PDF 輸出目標（隱藏，html2canvas 用，全 inline style 避免 CSS 變數渲染問題） -->
+<div id="pdf-target" style="position:fixed;top:-9999px;left:-9999px;display:none;pointer-events:none;z-index:-1;width:680px"></div>
+
+<!-- ══ 歡迎頁 ══ -->
+<div id="screen-welcome" class="screen active">
+  <div class="card">
+    <div class="badge-pill">原子習慣 × Mori 測驗</div>
+    <h1 class="hero-h1">你的習慣，<br/>為什麼一直斷掉？</h1>
+    <p class="hero-sub">不是你意志力不夠。<br/>《原子習慣》說：習慣失敗的根本，是系統設計的問題。<br/>10題情境測驗，精準定位你的習慣斷點。</p>
+    <div class="stats-row">
+      <span class="stat-chip"><strong>10</strong> 題情境測驗</span>
+      <span class="stat-chip"><strong>6</strong> 種習慣斷點類型</span>
+      <span class="stat-chip">約 <strong>4</strong> 分鐘完成</span>
+    </div>
+    <div class="sym-head">
+      <div class="sym-lbl">你最常有以下哪些感受？</div>
+      <div class="sym-hint">選出你認識的狀況（可複選，至少選一個）</div>
+    </div>
+    <div class="sym-grid" id="symGrid">
+      <div class="sym-item" onclick="pickSym(this)"><div class="sym-ltr">A</div><div class="sym-txt">立定目標，三天後就消失，下次又要「重新開始」</div></div>
+      <div class="sym-item" onclick="pickSym(this)"><div class="sym-ltr">B</div><div class="sym-txt">知道自己要做，但常到晚上才想起「今天又忘了」</div></div>
+      <div class="sym-item" onclick="pickSym(this)"><div class="sym-ltr">C</div><div class="sym-txt">努力了一陣子看不到成果，開始懷疑有沒有意義</div></div>
+      <div class="sym-item" onclick="pickSym(this)"><div class="sym-ltr">D</div><div class="sym-txt">換了環境或打亂節奏，習慣就整個中斷</div></div>
+      <div class="sym-item" onclick="pickSym(this)"><div class="sym-ltr">E</div><div class="sym-txt">隱約覺得「我不是那種能持續的人」</div></div>
+      <div class="sym-item" onclick="pickSym(this)"><div class="sym-ltr">F</div><div class="sym-txt">計畫一直在調整，執行卻一直沒真正開始</div></div>
+    </div>
+    <div class="sym-count" id="symCount">請至少選一個，開始精準診斷</div>
+    <button class="btn-gold" id="startBtn" onclick="startQuiz()" disabled>找出我的習慣斷點 →</button>
+  </div>
+</div>
+
+<!-- ══ 測驗頁 ══ -->
+<div id="screen-quiz" class="screen">
+  <div class="quiz-prog-wrap">
+    <div class="quiz-prog-meta">
+      <span class="prog-dim">習慣斷點診斷</span>
+      <span class="prog-num" id="progNum">1 / 10</span>
+    </div>
+    <div class="prog-track"><div class="prog-fill" id="progFill" style="width:10%"></div></div>
+  </div>
+  <div class="card">
+    <div class="q-num" id="qNum">Q1</div>
+    <div class="q-text" id="qText"></div>
+    <div class="opts" id="optList"></div>
+    <div class="quiz-nav">
+      <button class="btn-next" id="nextBtn" onclick="nextQ()" disabled>下一題 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 計算頁 ══ -->
+<div id="screen-calc" class="screen">
+  <div class="card">
+    <div class="calc-icon">🔗</div>
+    <div class="calc-title">正在分析你的習慣模式</div>
+    <div class="calc-sub" id="calcSub">比對《原子習慣》四個法則框架...</div>
+    <div class="calc-bar-wrap"><div class="calc-bar" id="calcBar"></div></div>
+  </div>
+</div>
+
+<!-- ══ 問卷解鎖頁（新增）：答完三題才解鎖完整分析 ══ -->
+<div id="screen-survey" class="screen">
+  <!-- 類型預覽 -->
+  <div class="survey-hero" id="surveyHero">
+    <div class="survey-hero-badge">你的習慣斷點類型</div>
+    <span class="survey-hero-emoji" id="surveyEmoji"></span>
+    <div class="survey-hero-en" id="surveyTypeEn"></div>
+    <div class="survey-hero-zh" id="surveyTypeZh"></div>
+    <div class="survey-hero-motto" id="surveyMotto"></div>
+  </div>
+
+  <!-- 問卷卡片 -->
+  <div class="survey-card">
+    <div class="survey-eyebrow">解鎖完整分析</div>
+    <div class="survey-title">再回答 3 個問題</div>
+    <div class="survey-sub">這不會改變你的類型結果，但可以更精準地剖析你目前需要面對的核心問題，並幫你解鎖完整的個人化診斷。</div>
+
+    <div class="survey-q">
+      <div class="survey-q-text">Q1｜你現在最想解決的是？</div>
+      <div class="survey-opts" id="sq1">
+        <div class="s-opt" onclick="pickSurvey('q1','A',this)"><div class="s-dot"></div>找到一個可以真正持續的副業執行系統</div>
+        <div class="s-opt" onclick="pickSurvey('q1','B',this)"><div class="s-dot"></div>先把自己的生活習慣整理好，其他才有可能</div>
+        <div class="s-opt" onclick="pickSurvey('q1','C',this)"><div class="s-dot"></div>了解自己為什麼總是半途而廢</div>
+        <div class="s-opt" onclick="pickSurvey('q1','D',this)"><div class="s-dot"></div>其實我現在還沒有很想改變</div>
+      </div>
+    </div>
+    <div class="survey-q">
+      <div class="survey-q-text">Q2｜如果有人能幫你，你最需要的是什麼？</div>
+      <div class="survey-opts" id="sq2">
+        <div class="s-opt" onclick="pickSurvey('q2','A',this)"><div class="s-dot"></div>一套設計好的系統，我照著執行就好</div>
+        <div class="s-opt" onclick="pickSurvey('q2','B',this)"><div class="s-dot"></div>一個有人一起做、互相督促的環境</div>
+        <div class="s-opt" onclick="pickSurvey('q2','C',this)"><div class="s-dot"></div>先搞清楚我的問題在哪，方向比方法更重要</div>
+        <div class="s-opt" onclick="pickSurvey('q2','D',this)"><div class="s-dot"></div>暫時不需要，我想先自己試試看</div>
+      </div>
+    </div>
+    <div class="survey-q" style="margin-bottom:20px">
+      <div class="survey-q-text">Q3｜你目前對「開始副業」這件事的狀態？</div>
+      <div class="survey-opts" id="sq3">
+        <div class="s-opt" onclick="pickSurvey('q3','A',this)"><div class="s-dot"></div>已經在做，但想讓執行更穩定</div>
+        <div class="s-opt" onclick="pickSurvey('q3','B',this)"><div class="s-dot"></div>有認真考慮，需要一個明確的起點</div>
+        <div class="s-opt" onclick="pickSurvey('q3','C',this)"><div class="s-dot"></div>還在觀望，還不確定適不適合自己</div>
+        <div class="s-opt" onclick="pickSurvey('q3','D',this)"><div class="s-dot"></div>目前沒有這個計畫</div>
+      </div>
+    </div>
+
+    <div class="survey-result-box" id="surveyResultBox"></div>
+    <button class="btn-unlock" id="unlockBtn" onclick="unlockResult()" disabled>查看完整分析 →</button>
+  </div>
+</div>
+
+<!-- ══ 結果頁 ══ -->
+<div id="screen-result" class="screen">
+
+  <div class="result-hero" id="resultHero">
+    <div class="result-badge">習慣斷點類型</div>
+    <span class="result-emoji" id="resultEmoji"></span>
+    <div class="result-type-en" id="resultTypeEn"></div>
+    <div class="result-type-zh" id="resultTypeZh"></div>
+    <div class="result-motto" id="resultMotto"></div>
+  </div>
+
+  <div class="law-card" id="lawCard">
+    <div class="law-icon-box" id="lawIcon"></div>
+    <div class="law-text" id="lawText"></div>
+  </div>
+
+  <div class="result-body">
+    <div class="insight-card">
+      <div class="insight-label">你的習慣斷點在這裡</div>
+      <div class="insight-text" id="insightBreak"></div>
+    </div>
+    <div class="insight-card">
+      <div class="insight-label">這背後的原因</div>
+      <div class="insight-text" id="insightRoot"></div>
+    </div>
+    <div class="insight-card">
+      <div class="insight-label">《原子習慣》給你的處方</div>
+      <div class="insight-text" id="insightFix"></div>
+    </div>
+    <div class="mori-box">
+      <div class="mori-lbl">Mori 觀點</div>
+      <blockquote class="mori-quote" id="moriQuote"></blockquote>
+    </div>
+  </div>
+
+  <div class="email-wrap">
+    <div class="email-title">收下你的 3 天行動計畫</div>
+    <div class="email-sub">依照你的習慣斷點類型，你會在接下來 3 天收到針對你設計的行動建議——每天一個可以立刻做的動作，不是泛用方法論，是只對你這個類型有效的第一步。</div>
+    <div class="email-row">
+      <input class="email-inp" type="email" id="emailInp" placeholder="你的 Email"/>
+      <button class="btn-email" onclick="submitEmail()">發送給我</button>
+    </div>
+    <button class="btn-skip-email" onclick="skipEmail()">跳過，直接下載 PDF</button>
+    <div class="email-note">不會收到廣告，只有針對你類型設計的內容。</div>
+    <div class="email-done" id="emailDone">✓ 已送出，請查收你的 3 天行動計畫。</div>
+  </div>
+
+  <div class="actions-wrap">
+    <div class="btn-row">
+      <button class="btn-line" onclick="openLine()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63h2.386c.349 0 .63.285.63.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63.349 0 .631.285.631.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.281.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/></svg>
+        追蹤 LINE@
+      </button>
+      <div class="btn-sec-row">
+        <button class="btn-ghost-sec" onclick="openIG()">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          追蹤 IG
+        </button>
+        <button class="btn-ghost-sec" onclick="downloadPDF()" id="dlBtn">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          下載 PDF
+        </button>
+      </div>
+      <div class="btn-sec-row">
+        <button class="btn-ghost-sec" onclick="shareResult()" id="shareBtn">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          分享圖片
+        </button>
+        <button class="btn-ghost-sec" onclick="copyResult()">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          複製文字
+        </button>
+      </div>
+      <button class="btn-retake" onclick="retake()">重新測驗</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ── JS 區塊索引 ────────────────────────────
+   1. 設定（CFG）
+   2. 狀態變數
+   3. 測驗資料（QS + TYPES）
+   4. 歡迎頁
+   5. 測驗主流程
+   6. 計分邏輯
+   7. 問卷解鎖頁（showSurvey / pickSurvey / unlockResult）
+   8. 結果頁渲染
+   9. Email 收集
+   10. 社群 / 分享 / PDF
+   11. 重測
+   12. Cursor / Particles
+── */
+
+/* ── 1. 設定 ── */
+const CFG = {
+  lineUrl: 'https://line.me/R/ti/p/@507wvwbz',
+  igUrl: 'https://instagram.com/mori1024_',
+  trackerUrl: 'https://quiz-tracker.mori1024.workers.dev/track',
+  mlKey: '',     // TODO: 填入 MailerLite API key
+  mlGroup: {
+    S: '',  T: '',  E: '',  R: '',  I: '',  O: '',
+  },
+};
+
+/* ── 2. 狀態變數 ── */
+let currentQ = 0, picked = null, answers = [], finalType = '';
+let surveyAnswers = { q1: '', q2: '', q3: '' };
+
+/* ── 3. 測驗資料 ── */
+const QS = [
+  { text:'你上週決心每天早起 30 分鐘做一件有意義的事，最可能發生的是？', opts:[
+    {t:'S',txt:'前三天很認真，第四天開始有各種理由，之後就算了'},
+    {t:'T',txt:'想做，但常到晚上才想起「今天忘記早起這件事了」'},
+    {t:'E',txt:'有幾天做到，但出差或睡不同地方就整個中斷'},
+    {t:'R',txt:'堅持了一週，但感覺沒什麼改變，開始懷疑這有沒有意義'},
+    {t:'O',txt:'還在思考早起之後要做什麼最有效率，還沒真的開始'},
+  ]},
+  { text:'你決定要養成每天運動的習慣，通常最先在哪個環節崩潰？', opts:[
+    {t:'S',txt:'新鮮感消退之後——大概第二週起就越來越難說服自己'},
+    {t:'I',txt:'做到一半覺得「我根本不是愛運動的人，強迫自己有什麼意義」'},
+    {t:'T',txt:'沒有固定提醒，一忙起來就忘了這件事存在'},
+    {t:'R',txt:'練了幾週但沒有明顯改變，覺得努力和結果不成比例'},
+    {t:'E',txt:'在家做不起勁，要去健身房才有狀態，但去的麻煩讓我越來越少去'},
+  ]},
+  { text:'「又一次」沒有執行昨天立下的計畫，第一個念頭是什麼？', opts:[
+    {t:'S',txt:'「等我重新找回那個衝勁再說」'},
+    {t:'I',txt:'「我就是那種說到做不到的人」'},
+    {t:'T',txt:'「我忘了⋯根本沒有什麼東西提醒我」'},
+    {t:'R',txt:'「努力了也看不到成果，繼續有什麼意思」'},
+    {t:'E',txt:'「最近狀態不好，等找到更好的時機再說」'},
+    {t:'O',txt:'「可能計畫本身還不夠完善，要先想清楚再行動」'},
+  ]},
+  { text:'你在 App Store 看到一個設計很精美的習慣追蹤 App，你會怎麼做？', opts:[
+    {t:'O',txt:'下載，花一個晚上把習慣系統全部設定好才去睡'},
+    {t:'T',txt:'覺得有道理，但以前也下載過類似的都沒在用，猶豫中'},
+    {t:'S',txt:'下載，前幾天用得很認真，然後那個 App 就沉了'},
+    {t:'R',txt:'不太有興趣，我需要的不是打卡，是真的看到成果的方法'},
+    {t:'I',txt:'靠 App 追蹤感覺有點刻意，不太是我習慣的做事方式'},
+  ]},
+  { text:'你有一個一直想建立的副業習慣（例如每天寫一篇貼文），但目前還沒真正開始，最可能的原因是？', opts:[
+    {t:'O',txt:'還沒想清楚完整的內容策略和發布流程，不敢輕易開始'},
+    {t:'S',txt:'之前嘗試過幾次但沒持續，現在在等一個「重新開始的好時機」'},
+    {t:'T',txt:'沒有固定的時間點讓我想到「現在要做這件事了」'},
+    {t:'E',txt:'需要一個可以專心的環境，但目前生活節奏很難找到那個狀態'},
+    {t:'I',txt:'隱約覺得「每天都要產出」這件事不太像我會做到的事'},
+  ]},
+  { text:'你和一個朋友相約每週互相問進度、督促習慣，三週後最可能的狀況是？', opts:[
+    {t:'S',txt:'第一週非常認真，第三週開始忘了傳進度，也不知道對方怎樣了'},
+    {t:'T',txt:'如果朋友沒有主動來問，我很可能就忘了這回事'},
+    {t:'R',txt:'做了，但說不上有什麼成果，不確定這樣繼續有沒有意義'},
+    {t:'I',txt:'被別人督促的感覺讓我有點不自在，我更想靠自己決定要不要做'},
+    {t:'E',txt:'如果雙方生活節奏落差太大，很快就流於形式、少了共鳴'},
+  ]},
+  { text:'關於「改變自己的習慣」，以下哪句話最接近你真實的內心狀態？', opts:[
+    {t:'I',txt:'「我知道要改變，但不確定那樣的改變是不是真的適合我」'},
+    {t:'S',txt:'「我相信自己能改變，但通常需要外在刺激才能啟動行動」'},
+    {t:'R',txt:'「我願意努力，但需要看到努力的意義，否則很難維持下去」'},
+    {t:'T',txt:'「我有目標，但在沒有提醒的情況下容易被日常雜事淹沒」'},
+    {t:'O',txt:'「我是在開始行動之前需要把所有細節都想清楚的人」'},
+  ]},
+  { text:'你設定了每週寫 500 字的目標，堅持了三週之後，你最可能會？', opts:[
+    {t:'R',txt:'開始計算「這樣下去多久才能有成果」，沒有答案就開始動搖'},
+    {t:'S',txt:'突然覺得這個方向不是最重要的，想去做另一件更有意思的事'},
+    {t:'O',txt:'思考這個目標的設計是否足夠好，是不是改成每天 100 字更有效率'},
+    {t:'I',txt:'有一次寫出讓自己滿意的東西，突然覺得「對，我就是個創作者」'},
+    {t:'T',txt:'某一週因為太忙漏掉了，然後就完全停了'},
+  ]},
+  { text:'你參加了一個很有啟發的講座，接下來三天你會？', opts:[
+    {t:'S',txt:'立刻開始行動，但一週後慢慢回到原本的節奏，就像沒去過'},
+    {t:'O',txt:'認真整理筆記，規劃一個詳細的行動計畫，但計畫還在計畫中'},
+    {t:'I',txt:'持續思考這些概念跟自己的狀況有沒有真正的連結'},
+    {t:'T',txt:'很有感觸，但三天後沒有具體行動提示，那種感受就慢慢淡了'},
+    {t:'R',txt:'開始計算如果照這個方向做，大概多久能看到具體的成果'},
+  ]},
+  { text:'以下哪種「習慣突破」對你最有幫助？', opts:[
+    {t:'T',txt:'有固定時間點和情境自動提醒我，不需要靠記憶或意志力'},
+    {t:'E',txt:'進入某個環境，自然就想行動，不需要說服自己'},
+    {t:'I',txt:'徹底認同「我就是做這件事的人」，行動變成身分的一部分'},
+    {t:'R',txt:'做了之後立刻有可見的進步感，有動力繼續做下去'},
+    {t:'S',txt:'維持對這件事的熱情和好奇心，讓動力能一直持續'},
+    {t:'O',txt:'有一套完善的系統，清楚知道每一步怎麼走，不需要靠感覺'},
+  ]},
+];
+
+const TYPES = {
+  S:{emoji:'⚡',en:'The Surge Starter',zh:'衝動啟動型',motto:'熱情是引擎，但你沒有油箱',color:'#C47058',colorB:'#D88060',law:{icon:'🔥',bg:'rgba(196,112,88,.15)',text:'你的弱點在<strong>第二法則</strong>——讓習慣有吸引力。你依賴情緒燃料啟動，沒有穩定的渴望機制維持動力。'},break:'你不缺動力——你的動力是一次性燃料。每次重新開始都充滿熱情，但新鮮感消退後，「繼續做」的理由突然就消失了。你把「有感覺」當成了「能持續」的前提，但感覺是最不可靠的引擎。',root:'《原子習慣》說，習慣靠的是系統，不是動機。動機會波動，系統不會。你目前的狀態是：完全依賴動機啟動，卻沒有任何系統在動機消退後接手。',fix:'把習慣設計到就算你狀態最差也能做到的程度——這叫「最小版本」。不是跑五公里，是穿上跑鞋走出門。同時，在習慣清單旁邊設一個「今天為什麼值得做」的小欄位，給自己一個感性的錨，不只是理性的計畫。',mori:'熱情是好的起點，但靠感覺行動的人永遠在「重新開始」的循環裡。真正持續的人不是比你更有熱情，是他們的系統在熱情消退後還在運轉。'},
+  I:{emoji:'🪞',en:'The Identity Conflict',zh:'身份衝突型',motto:'你想改變的行為，和你對自己的定義打架了',color:'#8A5EC4',colorB:'#A070DC',law:{icon:'👤',bg:'rgba(138,94,196,.15)',text:'你的核心是<strong>身份認同層</strong>——這是比四個法則更底層的問題。行為改變的阻力，來自「這不像我」這個信念。'},break:'你的習慣不是在對抗懶惰，是在對抗自我認知。「我不是那種能堅持的人」「這不像我會做的事」——這些念頭比任何外在障礙都更有力量。每次習慣斷掉，不只是行為失敗，而是對你「不適合這個改變」的自我定義的又一次確認。',root:'克利爾說，行為改變有三層：結果、過程、身分認同。大多數人從外層往內改，卻沒有碰到最核心的那層——你相信自己是誰。如果身分認同沒有更新，所有的行為改變都只是在和自己的定義硬碰硬。',fix:'最先要解決的不是「怎麼執行」，是「你怎麼定義自己」。從今天開始，每次你做到任何一個小動作，告訴自己：「這是我這種人會做的事。」不是等你變成那種人再開始，是每個行動都是投票給你想成為的那個自己。',mori:'最強的習慣障礙不是環境，不是時間，是你自己給自己貼的標籤。「我不是那種人」是一個信念，不是事實。信念可以更新——每一個小動作都是一票。'},
+  T:{emoji:'🔔',en:'The Trigger Gap',zh:'觸發缺失型',motto:'你不是沒有意願，你缺的是一個「起點」',color:'#58A898',colorB:'#70C0B0',law:{icon:'📌',bg:'rgba(88,168,152,.15)',text:'你的弱點在<strong>第一法則</strong>——讓提示顯而易見。習慣需要一個清晰的觸發信號，沒有錨點就算有意願也啟動不了。'},break:'你有目標，也有行動意願，但當你忙起來，這些計畫就好像從未存在過。不是因為你不想做，而是在正確的時機，沒有任何東西提醒你「現在是做這件事的時間」。你的習慣在生活裡沒有錨點。',root:'這是第一法則的問題：提示不夠顯而易見。大腦需要一個清晰的「起點信號」才能啟動習慣迴路。沒有提示，就算你有最強的意志力也沒用——因為意志力需要先被召喚，才能發揮作用。',fix:'設計「執行意向」：我將在 [具體時間] 在 [具體地點] 做 [具體行為]。研究顯示這讓習慣發生機率提升 2-3 倍。同時，把新習慣「附掛」在一個已有的日常動作上——這叫「習慣堆疊」。例如：每天喝完早咖啡（現有習慣）之後，立刻打開工作文件（新習慣）。',mori:'你的問題不是動機，是建築。沒有觸發點的習慣就像沒有入口的建築——就算裡面很好，你也不知道從哪裡進去。給你的習慣一個固定的入口。'},
+  R:{emoji:'⏳',en:'The Reward Mismatch',zh:'獎勵錯位型',motto:'你在對的路上，但你的大腦還沒感受到',color:'#C4A040',colorB:'#D8B850',law:{icon:'🎯',bg:'rgba(196,160,64,.15)',text:'你的弱點在<strong>第四法則</strong>——讓獎賞令人滿足。大腦需要即時回饋，但你做的事情回報都在遠處，缺少橋接機制。'},break:'你不是不努力，你是努力了但看不到回報。大腦的設計是：做了一件事，要有即時的滿足感才會繼續。但你做的那些事——寫作、學技能、存錢——回報都在未來，代價在當下。這種「時間差」讓你的大腦一直在問「值得嗎？」',root:'第四法則：讓獎賞令人滿足。問題是，大多數值得養成的好習慣，回報都是延遲的。你需要設計「即時獎賞」來橋接這個時間差——不是等六個月後看到成果，而是每次執行後立刻給自己一個可感受到的確認。',fix:'建立可見的進度追蹤（打勾、劃掉格子），讓「做了這件事」本身就有即時成就感。重新定義你的指標——不要只看最終結果，也追蹤「過程指標」：發了幾篇、練了幾次、寫了幾行。這些每天都有進展，而進展才是讓大腦想繼續的訊號。',mori:'你沒有問題，你的時間感有問題。習慣的複利很真實，但那個複利點在你的「感覺」能感受到之前，就需要你繼續做。這是所有長期遊戲的核心挑戰——在看不到回報時，繼續投票。'},
+  E:{emoji:'🌐',en:'The Environment Dependent',zh:'環境依賴型',motto:'你的習慣只在「那個條件」下存在',color:'#5888C4',colorB:'#70A0DC',law:{icon:'🏗',bg:'rgba(88,136,196,.15)',text:'你的弱點橫跨<strong>第一和第三法則</strong>——提示設計與降低執行阻力。你的習慣觸發條件太脆弱，容易被環境變化中斷。'},break:'你不是沒有能力，而是你的能力只在特定環境下被解鎖。特定的地點、特定的人、特定的氛圍——少了這些，習慣就像沒有插電的電器。問題不是你的意志力，是你的習慣還沒有和「通用環境」建立連接。',root:'你的習慣觸發條件太複雜、太容易被打斷。克利爾說，最強的習慣設計是讓行為「脈絡獨立」——不依賴單一環境，而是設計多個可替代的觸發點，讓習慣在不同條件下都能發生。',fix:'把習慣的「最小版本」設計到在任何環境都能執行。去健身房才能做的是「進階版」，在辦公室樓梯間做五分鐘伸展是「最小版」。最小版讓你保持連勝，而連勝才是長期改變的基礎——不是每次都做到最好，是永遠不讓它斷掉。',mori:'能在任何環境執行的習慣，才是真正屬於你的習慣。現在的你需要的不是更好的環境，是一個最小到任何地方都能做的版本。把依賴環境的能力，變成真正屬於你自己的能力。'},
+  O:{emoji:'🗂',en:'The Over-Planner',zh:'過度設計型',motto:'你的計畫，做得比執行還認真',color:'#7890B0',colorB:'#90A8C8',law:{icon:'⚙️',bg:'rgba(120,144,176,.15)',text:'你的弱點在<strong>第三法則</strong>——讓行動輕而易舉。你反向使用了它：用「系統還不夠完善」作為不執行的理由。'},break:'你的習慣問題不是執行力，是你把「規劃習慣系統」本身變成了另一個拖延。精美的追蹤表、詳盡的計畫書、完整的流程設計——這些都是真實的生產力感受，但它們不等於習慣本身。你在享受「準備好了」的感覺，但真正的習慣需要的是那一個開始的動作。',root:'第三法則的陷阱：讓行動輕而易舉的本意是降低執行阻力，但你把它反向用了——用「系統還不夠完善」當成不開始的理由。克利爾的提醒：習慣的神經路徑靠的是重複行為，不是完美計畫。不完美的執行，永遠勝過完美的規劃。',fix:'設定「兩分鐘規則」：不管計畫有多複雜，啟動的第一步必須在兩分鐘內可以完成。寫一行文字、打開你的工作文件、換上運動服。先讓行為發生，完善系統是下一步的事，不是第一步的前提。',mori:'你的優勢是思考力，你的盲點是用思考替代行動。最好的習慣系統是已經在運作中的那個，不是規劃最完整的那個。停止等待「準備好的感覺」——那個感覺，是做了之後才有的。'},
+};
+
+/* ── 4. 歡迎頁 ── */
+let symPicked = new Set();
+function pickSym(el){
+  el.classList.toggle('picked');
+  const ltr = el.querySelector('.sym-ltr').textContent;
+  if(el.classList.contains('picked')) symPicked.add(ltr); else symPicked.delete(ltr);
+  const n = symPicked.size;
+  document.getElementById('symCount').textContent = n>0?`已選 ${n} 個感受`:'請至少選一個，開始精準診斷';
+  document.getElementById('startBtn').disabled = n===0;
+}
+
+/* ── 5. 測驗主流程 ── */
+function startQuiz(){ show('screen-quiz'); renderQ(); }
+function renderQ(){
+  const q = QS[currentQ];
+  document.getElementById('qNum').textContent = `Q${currentQ+1}`;
+  document.getElementById('qText').textContent = q.text;
+  document.getElementById('progNum').textContent = `${currentQ+1} / ${QS.length}`;
+  document.getElementById('progFill').style.width = `${((currentQ+1)/QS.length)*100}%`;
+  const letters='ABCDEF';
+  document.getElementById('optList').innerHTML = q.opts.map((o,i)=>`
+    <div class="opt" onclick="pickOpt(this,'${o.t}')">
+      <div class="opt-ltr">${letters[i]}</div>
+      <div class="opt-txt">${o.txt}</div>
+    </div>`).join('');
+  picked=null;
+  const btn=document.getElementById('nextBtn');
+  btn.disabled=true; btn.classList.remove('ready');
+  btn.textContent = currentQ<QS.length-1?'下一題 →':'查看結果 →';
+}
+function pickOpt(el,type){
+  document.querySelectorAll('.opt').forEach(o=>o.classList.remove('picked'));
+  el.classList.add('picked'); picked=type;
+  const btn=document.getElementById('nextBtn');
+  btn.disabled=false; btn.classList.add('ready');
+}
+function nextQ(){
+  if(!picked) return;
+  answers.push(picked);
+  if(currentQ<QS.length-1){ currentQ++; renderQ(); } else { doCalc(); }
+}
+
+/* ── 6. 計分邏輯 ── */
+function doCalc(){
+  show('screen-calc');
+  const msgs=['比對《原子習慣》四個法則框架...','分析你的行為觸發模式...','定位習慣斷裂的根本位置...','生成個人化診斷結果...'];
+  let mi=0;
+  const subEl=document.getElementById('calcSub'), barEl=document.getElementById('calcBar');
+  const iv=setInterval(()=>{
+    mi++; if(mi<msgs.length){ subEl.style.opacity=0; setTimeout(()=>{subEl.textContent=msgs[mi];subEl.style.opacity=1;},150); }
+    barEl.style.width=`${Math.min(mi*28,95)}%`;
+  },700);
+  setTimeout(()=>{
+    clearInterval(iv); barEl.style.width='100%';
+    const scores={S:0,I:0,T:0,R:0,E:0,O:0};
+    answers.forEach(t=>{if(scores[t]!==undefined)scores[t]++;});
+    let best=null,bestScore=-1;
+    ['S','I','T','R','E','O'].forEach(k=>{if(scores[k]>bestScore){bestScore=scores[k];best=k;}});
+    finalType=best;
+    setTimeout(()=>showSurvey(),400);
+  },3200);
+}
+
+/* ── 7. 問卷解鎖頁 ── */
+function showSurvey(){
+  const t = TYPES[finalType];
+  // 設定問卷預覽區的類型顏色
+  const hero = document.getElementById('surveyHero');
+  hero.style.setProperty('--type-color-a', t.color);
+  hero.style.setProperty('--type-color-b', t.colorB);
+  document.getElementById('surveyEmoji').textContent = t.emoji;
+  document.getElementById('surveyTypeEn').textContent = t.en;
+  document.getElementById('surveyTypeZh').textContent = t.zh;
+  document.getElementById('surveyMotto').textContent = t.motto;
+  show('screen-survey');
+  trackResponse({quiz:'atomic-habits', result:t.zh});
+}
+
+function pickSurvey(q, val, el){
+  document.querySelectorAll(`#s${q} .s-opt`).forEach(o=>o.classList.remove('picked'));
+  el.classList.add('picked');
+  surveyAnswers[q]=val;
+  if(surveyAnswers.q1 && surveyAnswers.q2 && surveyAnswers.q3){
+    revealSurveyResult();
+    document.getElementById('unlockBtn').disabled=false;
+  }
+}
+
+function revealSurveyResult(){
+  const {q1,q2,q3}=surveyAnswers;
+  let msg='',cta='';
+  const seg = q1==='A'&&(q2==='A'||q2==='B')&&q3!=='D'?'partner':
+              (q1==='A'||q1==='B')&&q3==='A'?'client':
+              q1==='D'||q3==='D'?'cold':'warm';
+  if(seg==='partner'){ msg='你已經在行動了，需要的是一個更完善的系統。'; cta='我在找幾個願意一起試的人——加入 LINE@ 聊聊 →'; }
+  else if(seg==='client'){ msg='你有改變的意願，也知道方向在哪裡。下一步需要的是把「知道」變成「做到」的具體方法。'; cta='加入 LINE@，我把第一步整理給你 →'; }
+  else if(seg==='warm'){ msg='你還在摸索適合自己的方式——這很正常。先把這次的診斷結果留著，等你準備好的時候這裡有你需要的東西。'; cta='追蹤 IG，每週持續接收洞見 →'; }
+  else { msg='沒有問題，不是每個時刻都適合改變。先記下你的診斷結果，等你準備好的時候回來。'; cta='追蹤 IG，慢慢建立屬於你的節奏 →'; }
+  const el=document.getElementById('surveyResultBox');
+  el.innerHTML=`<div>${msg}</div><div class="survey-result-cta">${cta}</div>`;
+  el.style.display='block';
+  trackResponse({quiz:'atomic-habits',result:TYPES[finalType].zh,q1,q2,q3,segment:seg});
+}
+
+function unlockResult(){ showResult(); }
+
+/* ── 8. 結果頁渲染 ── */
+function showResult(){
+  const t=TYPES[finalType];
+  const hero=document.getElementById('resultHero');
+  hero.style.setProperty('--type-color-a',t.color);
+  hero.style.setProperty('--type-color-b',t.colorB);
+  document.documentElement.style.setProperty('--type-color-b',t.colorB);
+  document.getElementById('resultEmoji').textContent=t.emoji;
+  document.getElementById('resultTypeEn').textContent=t.en;
+  document.getElementById('resultTypeZh').textContent=t.zh;
+  document.getElementById('resultMotto').textContent=t.motto;
+  const lawCard=document.getElementById('lawCard');
+  lawCard.style.background=t.law.bg;
+  lawCard.style.borderColor=t.color+'44';
+  document.getElementById('lawIcon').textContent=t.law.icon;
+  document.getElementById('lawText').innerHTML=t.law.text;
+  document.getElementById('insightBreak').textContent=t.break;
+  document.getElementById('insightRoot').textContent=t.root;
+  document.getElementById('insightFix').textContent=t.fix;
+  document.getElementById('moriQuote').textContent=t.mori;
+  show('screen-result');
+}
+
+/* ── 9. Email 收集 ── */
+async function submitEmail(){
+  const email=document.getElementById('emailInp').value.trim();
+  if(!email||!email.includes('@')) return;
+  document.getElementById('emailDone').style.display='block';
+  document.getElementById('emailInp').disabled=true;
+  const {q1,q2,q3}=surveyAnswers;
+  trackResponse({quiz:'atomic-habits',result:TYPES[finalType].zh,q1,q2,q3,segment:calcSeg(),email});
+  if(CFG.mlKey&&CFG.mlGroup[finalType]){
+    try{
+      await fetch('https://connect.mailerlite.com/api/subscribers',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','Authorization':'Bearer '+CFG.mlKey},
+        body:JSON.stringify({email,groups:[CFG.mlGroup[finalType]]})
+      });
+    }catch(e){}
+  }
+}
+function skipEmail(){ downloadPDF(); }
+function calcSeg(){
+  const {q1,q2,q3}=surveyAnswers;
+  return q1==='A'&&(q2==='A'||q2==='B')&&q3!=='D'?'partner':
+         (q1==='A'||q1==='B')&&q3==='A'?'client':
+         q1==='D'||q3==='D'?'cold':'warm';
+}
+function trackResponse(data){
+  /* 本機預覽無效，需真實環境（Cloudflare Worker） */
+  try{fetch('https://quiz-tracker.mori1024.workers.dev/track',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data),keepalive:true}).catch(()=>{})}catch(e){}
+}
+
+/* ── 10. 社群 / 分享 / PDF ── */
+function openLine(){ window.open(CFG.lineUrl,'_blank'); }
+function openIG(){ window.open(CFG.igUrl,'_blank'); }
+
+function loadScript(src){
+  return new Promise((res,rej)=>{const s=document.createElement('script');s.src=src;s.onload=res;s.onerror=rej;document.head.appendChild(s);});
+}
+
+async function generateShareCanvas(){
+  const t=TYPES[finalType];
+  // 填充分享卡片
+  document.getElementById('sc-emoji').textContent=t.emoji;
+  document.getElementById('sc-type-en').textContent=t.en;
+  document.getElementById('sc-type-zh').textContent=t.zh;
+  document.getElementById('sc-motto').textContent=t.motto;
+  document.getElementById('sc-url').textContent=window.location.href.replace(/^https?:\/\//,'');
+  // 設定背景光暈
+  document.getElementById('sc-glow').style.background=`radial-gradient(circle at 50% 35%,${t.color}28,transparent 60%)`;
+  // 設定頂部色條
+  document.getElementById('sc-accent').style.background=`linear-gradient(90deg,transparent,${t.colorB},transparent)`;
+
+  if(!window.html2canvas){ await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js'); }
+  const card=document.getElementById('share-card');
+  return await html2canvas(card,{scale:2,useCORS:true,backgroundColor:'#0A0A0F',logging:false,width:600,height:600});
+}
+
+async function shareResult(){
+  const btn=document.getElementById('shareBtn');
+  const orig=btn.innerHTML;
+  btn.innerHTML='<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> 生成中…';
+  btn.disabled=true;
+  try{
+    const canvas=await generateShareCanvas();
+    const dataUrl=canvas.toDataURL('image/png');
+    // 嘗試 Web Share API（含圖片，iOS 15+、Android Chrome 支援）
+    if(navigator.share && navigator.canShare){
+      const blob=await (await fetch(dataUrl)).blob();
+      const file=new File([blob],'習慣斷點_'+TYPES[finalType].zh+'.png',{type:'image/png'});
+      if(navigator.canShare({files:[file]})){
+        await navigator.share({files:[file],title:'習慣斷點測驗',text:'我的習慣斷點類型是「'+TYPES[finalType].zh+'」\n'+TYPES[finalType].motto+'\n\n'+window.location.href});
+        return;
+      }
+    }
+    // Fallback：下載圖片
+    const link=document.createElement('a');
+    link.download='習慣斷點_'+TYPES[finalType].zh+'.png';
+    link.href=dataUrl;
+    document.body.appendChild(link); link.click(); document.body.removeChild(link);
+  }catch(e){
+    if(e.name!=='AbortError') alert('圖片生成失敗，請截圖儲存。');
+  }finally{
+    btn.innerHTML=orig; btn.disabled=false;
+  }
+}
+
+function copyResult(){
+  const t=TYPES[finalType];
+  const text=`【習慣斷點測驗結果】\n類型：${t.zh}（${t.en}）\n座右銘：${t.motto}\n\nMori 觀點：${t.mori}\n\n→ 測一測你的習慣斷點：${window.location.href}`;
+  navigator.clipboard.writeText(text).then(()=>{
+    const btn=event.target.closest('button'); const orig=btn.innerHTML;
+    btn.innerHTML='<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> 已複製';
+    setTimeout(()=>btn.innerHTML=orig,2000);
+  }).catch(()=>{});
+}
+
+/* 建構 PDF 專用 HTML（全 inline style，不依賴 CSS 變數） */
+function buildPDFHTML(t){
+  const lawHtml=t.law.text.replace(/<strong>/g,`<strong style="color:${t.colorB}">`);
+  return `<div style="background:#0A0A0F;font-family:'Noto Sans TC',sans-serif;width:680px;box-sizing:border-box;padding-bottom:40px">
+  <div style="height:4px;background:linear-gradient(90deg,${t.color},${t.colorB})"></div>
+  <div style="padding:40px 44px 32px;text-align:center">
+    <div style="display:inline-block;padding:4px 14px;border-radius:100px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;border:1px solid ${t.colorB};color:${t.colorB};margin-bottom:18px">習慣斷點類型</div>
+    <div style="font-size:56px;margin-bottom:12px">${t.emoji}</div>
+    <div style="font-size:11px;font-weight:700;letter-spacing:.1em;color:#9090A8;text-transform:uppercase;margin-bottom:6px">${t.en}</div>
+    <div style="font-size:40px;font-weight:900;color:#FFFFFF;margin-bottom:10px;line-height:1.2">${t.zh}</div>
+    <div style="font-size:14px;font-style:italic;color:#9090A8;max-width:380px;margin:0 auto;line-height:1.7">${t.motto}</div>
+  </div>
+  <div style="margin:0 32px 12px;background:${t.law.bg};border:1px solid ${t.color}66;border-radius:16px;padding:18px 22px;display:flex;gap:14px;align-items:flex-start">
+    <div style="font-size:22px;flex-shrink:0;margin-top:2px">${t.law.icon}</div>
+    <div style="font-size:13.5px;color:#9090A8;line-height:1.7">${lawHtml}</div>
+  </div>
+  <div style="margin:0 32px 12px;background:#14141F;border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:26px 28px">
+    <div style="margin-bottom:22px">
+      <div style="font-size:17px;font-weight:900;color:#EDEFF5;margin-bottom:10px">你的習慣斷點在這裡</div>
+      <div style="font-size:14px;color:#9090A8;line-height:1.85">${t.break}</div>
+    </div>
+    <div style="margin-bottom:22px;padding-top:20px;border-top:1px solid rgba(255,255,255,.06)">
+      <div style="font-size:17px;font-weight:900;color:#EDEFF5;margin-bottom:10px">這背後的原因</div>
+      <div style="font-size:14px;color:#9090A8;line-height:1.85">${t.root}</div>
+    </div>
+    <div style="padding-top:20px;border-top:1px solid rgba(255,255,255,.06)">
+      <div style="font-size:17px;font-weight:900;color:#EDEFF5;margin-bottom:10px">《原子習慣》給你的處方</div>
+      <div style="font-size:14px;color:#9090A8;line-height:1.85">${t.fix}</div>
+    </div>
+  </div>
+  <div style="margin:0 32px 0;background:rgba(196,169,106,.06);border:1px solid rgba(196,169,106,.2);border-radius:16px;padding:26px 28px">
+    <div style="font-size:17px;font-weight:900;color:#C4A96A;margin-bottom:10px">Mori 觀點</div>
+    <div style="font-size:14px;color:#9090A8;line-height:1.85;font-style:italic">${t.mori}</div>
+  </div>
+  <div style="text-align:center;padding:24px 44px 0">
+    <div style="font-size:11px;color:rgba(144,144,168,.35);letter-spacing:.04em">習慣斷點測驗 by Mori｜原子習慣 × 行動系統診斷</div>
+  </div>
+</div>`;
+}
+
+async function downloadPDF(){
+  const btn=document.getElementById('dlBtn'), orig=btn.innerHTML;
+  btn.innerHTML='<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> 產生中…';
+  btn.disabled=true;
+  const target=document.getElementById('pdf-target');
+  try{
+    if(!window.html2canvas){ await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js'); }
+    const t=TYPES[finalType];
+    target.innerHTML=buildPDFHTML(t);
+    target.style.display='block';
+    await new Promise(r=>setTimeout(r,120)); // 等字體渲染
+    const canvas=await html2canvas(target,{scale:2,useCORS:true,backgroundColor:'#0A0A0F',logging:false,width:680,windowWidth:680});
+    target.style.display='none';
+    let ok=false;
+    try{
+      if(!window.jspdf){ await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'); }
+      const {jsPDF}=window.jspdf;
+      const w=210,h=Math.ceil(w*(canvas.height/canvas.width));
+      const pdf=new jsPDF({unit:'mm',format:[w,h],orientation:'portrait'});
+      pdf.addImage(canvas.toDataURL('image/jpeg',.93),'JPEG',0,0,w,h);
+      pdf.save(`習慣斷點診斷報告_${t.zh}.pdf`); ok=true;
+    }catch(e){}
+    if(!ok){
+      const a=document.createElement('a'); a.download=`習慣斷點_${t.zh}.png`; a.href=canvas.toDataURL('image/png');
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    }
+  }catch(e){ target.style.display='none'; alert('產生失敗，請截圖儲存。'); }
+  finally{ btn.innerHTML=orig; btn.disabled=false; }
+}
+
+/* ── 11. 重測 ── */
+function retake(){
+  currentQ=0;picked=null;answers=[];finalType='';
+  surveyAnswers={q1:'',q2:'',q3:''};
+  symPicked.clear();
+  document.querySelectorAll('.sym-item').forEach(el=>el.classList.remove('picked'));
+  document.getElementById('symCount').textContent='請至少選一個，開始精準診斷';
+  document.getElementById('startBtn').disabled=true;
+  document.getElementById('emailInp').value='';
+  document.getElementById('emailInp').disabled=false;
+  document.getElementById('emailDone').style.display='none';
+  document.getElementById('surveyResultBox').style.display='none';
+  document.getElementById('unlockBtn').disabled=true;
+  document.querySelectorAll('.s-opt').forEach(el=>el.classList.remove('picked'));
+  show('screen-welcome');
+}
+
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ── 12. Cursor ── */
+(function(){
+  const hp=window.matchMedia?.('(pointer: fine)').matches;
+  const nm=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  if(!hp||nm) return;
+  const ring=document.getElementById('cur-ring'),dot=document.getElementById('cur-dot'),spot=document.getElementById('cursor-spotlight');
+  let sx=-200,sy=-200,rx=-200,ry=-200;
+  window.addEventListener('mousemove',e=>{
+    sx=e.clientX;sy=e.clientY;
+    dot.style.transform=`translate3d(${sx}px,${sy}px,0) translate(-50%,-50%)`;
+    spot.style.background=`radial-gradient(220px at ${sx}px ${sy}px,rgba(88,168,152,.14),transparent 70%)`;
+    const active=e.target instanceof Element&&!!e.target.closest('a,button,[role="button"],input,.sym-item,.opt,.s-opt');
+    ring.classList.toggle('is-locked',active);
+  },{passive:true});
+  window.addEventListener('mousedown',()=>ring.classList.add('is-down'),{passive:true});
+  window.addEventListener('mouseup',()=>ring.classList.remove('is-down'),{passive:true});
+  (function loop(){rx+=(sx-rx)*.18;ry+=(sy-ry)*.18;ring.style.transform=`translate3d(${rx}px,${ry}px,0) translate(-50%,-50%)`;requestAnimationFrame(loop);})();
+})();
+
+/* ── Particles ── */
+window.addEventListener('load',()=>{
+  if(window.particlesJS) particlesJS('particles-js',{
+    particles:{number:{value:38,density:{enable:true,value_area:900}},color:{value:'#C4A96A'},shape:{type:'circle'},
+      opacity:{value:.15,random:true,anim:{enable:true,speed:.6,opacity_min:.05,sync:false}},size:{value:2,random:true},
+      line_linked:{enable:true,distance:160,color:'#58A898',opacity:.07,width:1},
+      move:{enable:true,speed:.5,direction:'none',random:true,out_mode:'out'}},
+    interactivity:{detect_on:'canvas',events:{onhover:{enable:true,mode:'repulse'},onclick:{enable:false}},modes:{repulse:{distance:80,duration:.4}}},
+    retina_detect:true,
+  });
+});
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+</body>
+</html>
