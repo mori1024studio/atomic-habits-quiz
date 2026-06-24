@@ -885,20 +885,12 @@ function show(id){
   (function loop(){rx+=(sx-rx)*.18;ry+=(sy-ry)*.18;ring.style.transform=`translate3d(${rx}px,${ry}px,0) translate(-50%,-50%)`;requestAnimationFrame(loop);})();
 })();
 
-/* ── Particles ── */
-window.addEventListener('load',()=>{
-  if(window.particlesJS) particlesJS('particles-js',{
-    particles:{number:{value:38,density:{enable:true,value_area:900}},color:{value:'#C4A96A'},shape:{type:'circle'},
-      opacity:{value:.15,random:true,anim:{enable:true,speed:.6,opacity_min:.05,sync:false}},size:{value:2,random:true},
-      line_linked:{enable:true,distance:160,color:'#58A898',opacity:.07,width:1},
-      move:{enable:true,speed:.5,direction:'none',random:true,out_mode:'out'}},
-    interactivity:{detect_on:'canvas',events:{onhover:{enable:true,mode:'repulse'},onclick:{enable:false}},modes:{repulse:{distance:80,duration:.4}}},
-    retina_detect:true,
-  });
+/* ── MoriParticles ── */
+MoriParticles.init('quiz');
 });
 </script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+<script src="https://mori-homepage.pages.dev/shared/particles.js"></script>
 </body>
 </html>
